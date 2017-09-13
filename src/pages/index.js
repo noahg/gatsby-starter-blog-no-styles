@@ -4,7 +4,6 @@ import get from 'lodash/get'
 import Helmet from 'react-helmet'
 
 import Bio from '../components/Bio'
-import { rhythm } from '../utils/typography'
 
 class BlogIndex extends React.Component {
   render() {
@@ -20,15 +19,8 @@ class BlogIndex extends React.Component {
             const title = get(post, 'node.frontmatter.title') || post.node.path
             return (
               <div key={post.node.frontmatter.path}>
-                <h3
-                  style={{
-                    marginBottom: rhythm(1 / 4),
-                  }}
-                >
-                  <Link
-                    style={{ boxShadow: 'none' }}
-                    to={post.node.frontmatter.path}
-                  >
+                <h3>
+                  <Link to={post.node.frontmatter.path} >
                     {post.node.frontmatter.title}
                   </Link>
                 </h3>
