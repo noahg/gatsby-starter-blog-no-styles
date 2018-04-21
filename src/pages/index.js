@@ -12,31 +12,25 @@ class BlogIndex extends React.Component {
 
     return (
       <div>
-        <Helmet title={get(this, 'props.data.site.siteMetadata.title')} />
+        <Helmet title={siteTitle} />
         <Bio />
-        {posts.map(post => {
-          if (post.node.path !== '/404/') {
-            const title = get(post, 'node.frontmatter.title') || post.node.path
-            return (
-              <div key={post.node.frontmatter.path}>
-                <h3>
-                  <Link to={post.node.frontmatter.path} >
-                    {post.node.frontmatter.title}
-                  </Link>
-                </h3>
-                <small>{post.node.frontmatter.date}</small>
-                <p dangerouslySetInnerHTML={{ __html: post.node.excerpt }} />
-              </div>
-            )
-          }
+        {posts.map(({ node }) => {
+          const title = get(node, 'frontmatter.title') || node.fields.slug
+          return (
+            <div key={node.fields.slug}>
+              <h3>
+                <Link style={{ boxShadow: 'none' }} to={node.fields.slug}>
+                  {title}
+                </Link>
+              </h3>
+              <small>{node.frontmatter.date}</small>
+              <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+            </div>
+          )
         })}
       </div>
     )
   }
-}
-
-BlogIndex.propTypes = {
-  route: React.PropTypes.object,
 }
 
 export default BlogIndex
@@ -52,11 +46,11 @@ export const pageQuery = graphql`
       edges {
         node {
           excerpt
-          frontmatter {
-            path
-            date(formatString: "DD MMMM, YYYY")
+          fields {
+            slug
           }
           frontmatter {
+            date(formatString: "DD MMMM, YYYY")
             title
           }
         }
